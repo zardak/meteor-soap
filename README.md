@@ -1,6 +1,6 @@
 # meteor-soap
 [soap npm module](https://github.com/vpulim/node-soap) wrapped for meteor.
-Currently only the SOAP client part is wrapped.
+Currently only the SOAP client part is wrapped. The SOAP server part would require major changes either to `node-soap` or `meteor` itself, so it's not possible at the moment without hacking too deep.
 
 API is mostly the same, but has no callback argument since it's synchronous and `throw`'s errors.
 
