@@ -80,6 +80,6 @@ testData = {
   requestData: { Request: '1337' },
   responseData: { Response: '1337' },
 
-  clientCreationFailedReason: 'Soap client creation failed',
-  methodCallFailedReason: 'Soap method call failed'
+  clientCreationFailed: 'soap-creation',
+  methodCallFailed: 'soap-method'
 };
