@@ -10,13 +10,16 @@ Tinytest.addAsync 'Package has correct behaviour', (test, next) ->
   Meteor.setTimeout ->
     try
       soapClient = Soap.createClient Meteor.absoluteUrl 'soap?wsdl'
+      test.equal soapClient.describe(), testData.expectedDescription,
+        'Soap client description differs from expected'
     catch err
       console.log err
     test.isUndefined err, 'Soap client creation failed'
 
     try
       response = soapClient.MyOperation testData.requestData
-      test.equal response, testData.responseData, 'Soap method call failed'
+      test.equal response, testData.responseData,
+        'Soap method call result differs from expected'
     catch err
       console.log err
     test.isUndefined err, 'Soap method call failed'

@@ -48,7 +48,7 @@ testData = {
     </wsdl:binding>\
     <wsdl:service name="MyService">\
       <wsdl:port name="MyServicePort" binding="MyServiceBinding">\
-        <soap:address location="http://localhost:3000/soap"/>\
+        <soap:address location="' + Meteor.absoluteUrl('soap') + '"/>\
       </wsdl:port>\
     </wsdl:service>\
   </wsdl:definitions>',
@@ -72,6 +72,17 @@ testData = {
           return {
             Response: args.Request
           };
+        }
+      }
+    }
+  },
+
+  expectedDescription: {
+    MyService: {
+      MyServicePort: {
+        MyOperation: {
+          input: {},
+          output: {}
         }
       }
     }
