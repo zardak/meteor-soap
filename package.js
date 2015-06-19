@@ -6,12 +6,18 @@ Package.describe({
   documentation: 'README.md'
 });
 
+Npm.depends({
+  soap: '0.9.1'
+});
+
 Package.onUse(function(api) {
   api.versionsFrom('0.9.3');
   api.use('coffeescript');
   api.addFiles('soap.coffee', 'server');
 });
 
-Npm.depends({
-  soap: '0.9.1'
+Package.onTest(function(api) {
+  api.use(['coffeescript', 'tinytest', 'zardak:soap']);
+  api.addFiles('tests/data.js', 'server');
+  api.addFiles('tests/tests.coffee', 'server');
 });
