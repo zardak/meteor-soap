@@ -1,4 +1,4 @@
-# meteor-soap
+# meteor-soap [![Build Status](https://travis-ci.org/zardak/meteor-soap.svg?branch=master)](https://travis-ci.org/zardak/meteor-soap)
 [soap npm module](https://github.com/vpulim/node-soap) wrapped for meteor.
 Both client and server are usable, although server is not thoroughly tested.
 
