@@ -4,93 +4,81 @@ testData = {
     'WSSecurity',
     'ClientSSLSecurity',
     'BearerSecurity',
-    'createClient'
+    'createClient',
+    'listen'
   ],
 
-  wsdlUrl: 'http://www.webservicex.net/geoipservice.asmx?WSDL',
-  methodName: 'GetGeoIP',
-  methodArgs: {
-    IPAddress: '8.8.8.8'
-  },
+  wsdlDefinition: '<?xml version="1.0" encoding="UTF-8"?>\
+  <wsdl:definitions name="MyService" targetNamespace="http://www.example.com/v1" xmlns="http://www.example.com/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">\
+    <wsdl:types>\
+      <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.example.com/v1" xmlns="http://www.example.com/v1">\
+  		<xs:element name="Request">\
+  		</xs:element>\
+  		<xs:element name="Response">\
+  		</xs:element>\
+      </xs:schema>\
+      </wsdl:types>\
+      <wsdl:message name="InputMessage">\
+      <wsdl:part name="parameter" element="Request">\
+      </wsdl:part>\
+    </wsdl:message>\
+    <wsdl:message name="OutputMessage">\
+      <wsdl:part name="parameter" element="Response">\
+      </wsdl:part>\
+    </wsdl:message>\
+    <wsdl:portType name="MyServicePortType">\
+      <wsdl:operation name="MyOperation">\
+        <wsdl:input message="InputMessage">\
+      </wsdl:input>\
+        <wsdl:output message="OutputMessage">\
+      </wsdl:output>\
+      </wsdl:operation>\
+    </wsdl:portType>\
+    <wsdl:binding name="MyServiceBinding" type="MyServicePortType">\
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>\
+      <wsdl:operation name="MyOperation">\
+        <soap:operation soapAction="MyOperation"/>\
+        <wsdl:input>\
+          <soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>\
+        </wsdl:input>\
+        <wsdl:output>\
+          <soap:body use="literal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>\
+        </wsdl:output>\
+      </wsdl:operation>\
+    </wsdl:binding>\
+    <wsdl:service name="MyService">\
+      <wsdl:port name="MyServicePort" binding="MyServiceBinding">\
+        <soap:address location="http://localhost:3000/soap"/>\
+      </wsdl:port>\
+    </wsdl:service>\
+  </wsdl:definitions>',
 
-  serviceDescription: {
-    "GeoIPService": {
-      "GeoIPServiceSoap": {
-        "GetGeoIP": {
-          "input": {
-            "IPAddress": "s:string"
-          },
-          "output": {
-            "GetGeoIPResult": {
-              "ReturnCode": "s:int",
-              "IP": "s:string",
-              "ReturnCodeDetails": "s:string",
-              "CountryName": "s:string",
-              "CountryCode": "s:string",
-              "targetNSAlias": "tns",
-              "targetNamespace": "http://www.webservicex.net/"
-            }
+  serviceDefinition: {
+    MyService: {
+      MyServicePort: {
+        MyOperation: function(args) {
+          if(!args.Request) {
+            throw {
+              Fault: {
+                Code: {
+                  Value: "soap:Sender",
+                  Subcode: { value: "rpc:BadArguments" }
+                },
+                Reason: { Text: "Processing Error" }
+              }
+            };
           }
-        },
-        "GetGeoIPContext": {
-          "input": {},
-          "output": {
-            "GetGeoIPContextResult": {
-              "ReturnCode": "s:int",
-              "IP": "s:string",
-              "ReturnCodeDetails": "s:string",
-              "CountryName": "s:string",
-              "CountryCode": "s:string",
-              "targetNSAlias": "tns",
-              "targetNamespace": "http://www.webservicex.net/"
-            }
-          }
-        }
-      },
-      "GeoIPServiceSoap12": {
-        "GetGeoIP": {
-          "input": {
-            "IPAddress": "s:string"
-          },
-          "output": {
-            "GetGeoIPResult": {
-              "ReturnCode": "s:int",
-              "IP": "s:string",
-              "ReturnCodeDetails": "s:string",
-              "CountryName": "s:string",
-              "CountryCode": "s:string",
-              "targetNSAlias": "tns",
-              "targetNamespace": "http://www.webservicex.net/"
-            }
-          }
-        },
-        "GetGeoIPContext": {
-          "input": {},
-          "output": {
-            "GetGeoIPContextResult": {
-              "ReturnCode": "s:int",
-              "IP": "s:string",
-              "ReturnCodeDetails": "s:string",
-              "CountryName": "s:string",
-              "CountryCode": "s:string",
-              "targetNSAlias": "tns",
-              "targetNamespace": "http://www.webservicex.net/"
-            }
-          }
+
+          return {
+            Response: args.Request
+          };
         }
       }
     }
   },
 
-  methodResponse: {
-    GetGeoIPResult: {
-      ReturnCode: 1,
-      IP: '8.8.8.8',
-      ReturnCodeDetails: 'Success',
-      CountryName: 'United States',
-      CountryCode: 'USA'
-    }
-  },
+  requestData: { Request: '1337' },
+  responseData: { Response: '1337' },
 
   clientCreationFailedReason: 'Soap client creation failed',
   methodCallFailedReason: 'Soap method call failed'

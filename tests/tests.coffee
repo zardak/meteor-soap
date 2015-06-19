@@ -1,32 +1,35 @@
-Tinytest.add 'Soap client has correct behaviour', (test) ->
-
+Tinytest.add 'Package exposes things correctly', (test) ->
   for exposed in testData.packageExposes
     test.isTrue Soap[exposed], "Soap must expose #{exposed}"
 
-  try
-    soapClient = Soap.createClient testData.wsdlUrl
-  catch err
 
-  test.isUndefined err, 'Soap client creation failed'
-  test.equal soapClient.describe(), testData.serviceDescription,
-    'Service description isn\'t correct'
+Tinytest.addAsync 'Package has correct behaviour', (test, next) ->
+  soapServer = Soap.listen '/soap', testData.serviceDefinition,
+    testData.wsdlDefinition
 
-  try
-    response = soapClient[testData.methodName](testData.methodArgs)
-  catch err
+  Meteor.setTimeout ->
+    try
+      soapClient = Soap.createClient 'http://localhost:3000/soap?wsdl'
+    catch err
+    test.isUndefined err, 'Soap client creation failed'
 
-  test.equal response, testData.methodResponse, 'Soap method call failed'
+    try
+      response = soapClient.MyOperation testData.requestData
+      test.equal response, testData.responseData, 'Soap method call failed'
+    catch err
+    test.isUndefined err, 'Soap method call failed'
 
-  try
-    soapClient[testData.methodName]({})
-  catch err
+    try
+      soapClient.MyOperation {}
+    catch err
+    test.equal err.reason, testData.methodCallFailedReason,
+      'Incorrectly invoked soap method must throw'
 
-  test.equal err.reason, testData.methodCallFailedReason,
-    'incorrectly invoked soap method must throw'
+    try
+      Soap.createClient ''
+    catch err
+    test.equal err.reason, testData.clientCreationFailedReason,
+      'createClient must throw on error'
 
-  try
-    Soap.createClient ''
-  catch err
-
-  test.equal err.reason, testData.clientCreationFailedReason,
-    'createClient must throw'
+    next()
+  , 0

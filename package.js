@@ -1,6 +1,6 @@
 Package.describe({
   name: 'zardak:soap',
-  version: '0.1.1',
+  version: '0.2.0',
   summary: 'Wrapped npm soap package',
   git: 'https://github.com/zardak/meteor-soap',
   documentation: 'README.md'
@@ -12,8 +12,9 @@ Npm.depends({
 
 Package.onUse(function(api) {
   api.versionsFrom('0.9.3');
-  api.use('coffeescript');
-  api.addFiles('soap.coffee', 'server');
+  api.use(['coffeescript', 'webapp']);
+  api.addFiles('client.coffee', 'server');
+  api.addFiles('server.coffee', 'server');
 });
 
 Package.onTest(function(api) {
