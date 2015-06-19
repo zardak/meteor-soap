@@ -9,7 +9,7 @@ Tinytest.addAsync 'Package has correct behaviour', (test, next) ->
 
   Meteor.setTimeout ->
     try
-      soapClient = Soap.createClient 'http://localhost:3000/soap?wsdl'
+      soapClient = Soap.createClient Meteor.absoluteUrl 'soap?wsdl'
     catch err
     test.isUndefined err, 'Soap client creation failed'
 
