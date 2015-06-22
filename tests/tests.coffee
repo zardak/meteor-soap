@@ -18,6 +18,13 @@ Tinytest.addAsync 'Package has correct behaviour', (test, next) ->
     try
       response = soapClient.MyOperation testData.requestData
       test.equal response, testData.responseData,
+        'Soap shortcut method call result differs from expected'
+    catch err
+    test.isUndefined err, 'Soap shortcut method call failed'
+
+    try
+      response = soapClient.MyService.MyServicePort.MyOperation testData.requestData
+      test.equal response, testData.responseData,
         'Soap method call result differs from expected'
     catch err
     test.isUndefined err, 'Soap method call failed'

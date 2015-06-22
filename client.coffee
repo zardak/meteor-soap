@@ -22,7 +22,8 @@ wrapMethod = (method, client) ->
     for serviceName, service of client.describe()
       for portName, port of service
         for methodName, method of port
-          client[serviceName][portName][methodName] = wrapMethod method, client
+          client[serviceName][portName][methodName] =
+            wrapMethod client[serviceName][portName][methodName], client
 
           unless wrappedMethods[methodName]
             client[methodName] = wrapMethod client[methodName], client
