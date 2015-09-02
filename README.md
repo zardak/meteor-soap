@@ -1,10 +1,12 @@
 # meteor-soap [![Build Status](https://travis-ci.org/zardak/meteor-soap.svg?branch=master)](https://travis-ci.org/zardak/meteor-soap)
 [soap npm module](https://github.com/vpulim/node-soap) wrapped for meteor.
-Both client and server are usable, although server is not thoroughly tested.
+Both SOAP client and SOAP server are usable, although server is not thoroughly tested.
 
 # Exposed API
-> API is mostly the same, but has no callback argument since it's synchronous and `throw`'s errors.
-> Please correspond to original documentation
+API is mostly the same, but has no callback argument since it's synchronous and `throw`'s errors.
+Please correspond to original documentation
+
+`node-soap` isn't packaged for browser usage and thus, `meteor-soap` is avalible only server-side.
 
 ## Package
 ### `Soap.createClient(url[, options])` - create a new SOAP client from a WSDL url. Also supports a local filesystem path.
