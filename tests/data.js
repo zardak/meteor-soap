@@ -2,6 +2,7 @@ testData = {
   packageExposes: [
     'BasicAuthSecurity',
     'WSSecurity',
+    'WSSecurityCert',
     'ClientSSLSecurity',
     'BearerSecurity',
     'createClient',
